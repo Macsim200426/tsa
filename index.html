@@ -1,0 +1,60 @@
+<!doctype HTML>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <meta charset="utf-8">
+    </head>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
+    
+    <!-- add this script in order to load a large set of 3D model extensions-->
+    
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@fb96ab2/dist/aframe-extras.min.js"></script>
+    <body style='margin : 0px; overflow: hidden;'>
+        <!-- we add detectionMode and matrixCodeType to tell AR.js to recognize barcode markers -->
+        <a-scene embedded arjs="patternRatio: 0.75">
+
+        <a-assets>
+            <a-asset-item id="polon" response-type="arraybuffer" src="https://macsim200426.github.io/pol/vos.glb"></a-asset-item>
+        </a-assets>
+
+        <a-assets>
+            <audio id="sound" src=" https://macsim200426.github.io/pol/rocket.mp3" preload="auto"></audio>
+        </a-assets>
+
+        
+
+        <a-marker type="pattern" url="https://macsim200426.github.io/pater/pattern-KY-wrMBzzFE.patt">
+            <a-entity
+                gltf-model="#polon"
+                scale="0.5 0.5 0.5"
+                animation-mixer="clip:ConeAction";
+                
+                
+                soundhandler
+                >
+            </a-entity>
+            
+        </a-marker>
+        <a-entity sound="src: #sound" autoplay="false"></a-entity>
+
+        <!-- use this <a-entity camera> to support multiple-markers, otherwise use <a-marker-camera> instead of </a-marker> -->
+        <a-entity camera></a-entity>
+        </a-scene>
+        <script>
+            AFRAME.registerComponent('soundhandler', {
+                tick: function () {
+                       var entity = document.querySelector('[sound]');
+                     if (document.querySelector('a-marker').object3D.visible == true) {
+                        entity.components.sound.playSound();
+                    } else {
+                        entity.components.sound.pauseSound();
+                    }
+            
+            
+            
+                 }
+            });
+            </script>
+    </body>
+</html>
